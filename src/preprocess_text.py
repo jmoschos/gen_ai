@@ -1,6 +1,6 @@
-import pandas as pd
 import re
 import string
+from textblob import TextBlob
 
 class DataPreprocessor:
     def __init__(self, df):
@@ -23,9 +23,14 @@ class DataPreprocessor:
     def remove_punctuation(self, text):
         return text.translate(str.maketrans('', '', self.punctuation))
 
+    def fix_typos(self, text):
+        textBlb = TextBlob(text)
+        return textBlb.correct().string
+
     def fix_all_data(self, col):
         self.make_lower_case(col)
         self.df[col] = self.df[col].apply(self.handle_html_tags)
         self.df[col] = self.df[col].apply(self.remove_url)
         self.df[col] = self.df[col].apply(self.remove_punctuation)
+        #self.df[col] = self.df[col].apply(self.fix_typos)
         return self.df
