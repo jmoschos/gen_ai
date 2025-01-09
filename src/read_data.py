@@ -7,5 +7,6 @@ class DataIngestor:
 
     def read_data(self):
         self.df = pd.read_csv(self.base_path + '\\' + self.file_name)
+        self.df = self.df.iloc[:10000]
         return self.df
 
