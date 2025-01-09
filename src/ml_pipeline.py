@@ -2,6 +2,8 @@ import os
 from read_data import DataIngestor
 from preprocess_text import DataPreprocessor
 from train_test_split import TrainTestSplitter
+from train_model import ModelTrainer
+from evaluate_model import ModelEvaluator
 
 
 class Pipeline:
@@ -16,4 +18,9 @@ class Pipeline:
 
         ts = TrainTestSplitter(df_reviews)
         X_train,X_test,y_train,y_test  = ts.prepare_data()
-        print(X_train)
+
+        mt = ModelTrainer(X_train, y_train, X_test)
+        predictions = mt.train_and_predict()
+
+        me = ModelEvaluator(predictions, y_test)
+        print(me.evaluate_accuracy())
